@@ -58,6 +58,7 @@ func (a *Alert) isZero() bool {
 
 type APS struct {
 	Alert            Alert
+	MutableContent   int
 	Badge            BadgeNumber
 	Sound            string
 	ContentAvailable int
@@ -94,20 +95,22 @@ func (aps APS) MarshalJSON() ([]byte, error) {
 	if aps.AccountId != "" {
 		data["account-id"] = aps.AccountId
 	}
+	if aps.MutableContent != 0 {
+		data["mutable-content"] = aps.MutableContent
+	}
 
 	return json.Marshal(data)
 }
 
 type Payload struct {
-	APS APS
-	// MDM for mobile device management
-	MDM          string
+	APS          APS
+	Image        string
 	customValues map[string]interface{}
 }
 
 func (p *Payload) MarshalJSON() ([]byte, error) {
-	if len(p.MDM) != 0 {
-		p.customValues["mdm"] = p.MDM
+	if len(p.Image) != 0 {
+		p.customValues["image"] = p.Image
 	} else {
 		p.customValues["aps"] = p.APS
 	}
