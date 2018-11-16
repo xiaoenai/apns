@@ -109,10 +109,9 @@ type Payload struct {
 }
 
 func (p *Payload) MarshalJSON() ([]byte, error) {
+	p.customValues["aps"] = p.APS
 	if len(p.Image) != 0 {
 		p.customValues["image"] = p.Image
-	} else {
-		p.customValues["aps"] = p.APS
 	}
 
 	return json.Marshal(p.customValues)
